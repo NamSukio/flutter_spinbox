@@ -53,7 +53,7 @@ abstract class BaseSpinBoxState<T extends BaseSpinBox> extends State<T> {
     return double.tryParse(text.replaceAll(',', ''));
   }
 
-  String _formatText(double? number) {
+  String _formatText(dynamic? number) {
     return formatCurrencyForeign(
       number,
       decimals: widget.numOfDecimals,
@@ -66,9 +66,8 @@ abstract class BaseSpinBoxState<T extends BaseSpinBox> extends State<T> {
     super.initState();
     _value = widget.value;
     _controller = TextEditingController(
-        text: _value!.toInt() == _value
-            ? _value!.toInt().toString()
-            : _formatText(_value));
+        text:
+            _formatText(_value!.toInt() == _value ? _value!.toInt() : _value));
     _controller!.addListener(_updateValue);
     _focusNode = FocusNode(onKey: (node, event) => _handleKey(event));
     _focusNode!.addListener(() => setState(_selectAll));
@@ -106,7 +105,8 @@ abstract class BaseSpinBoxState<T extends BaseSpinBox> extends State<T> {
   bool setValue(double v) {
     final newValue = v.clamp(widget.min, widget.max).toDouble();
     if (newValue == value) return false;
-    final text = _formatText(newValue);
+    final text =
+        _formatText(newValue.toInt() == newValue ? newValue.toInt() : newValue);
     final selection = _controller!.selection;
     final oldOffset = value!.isNegative ? 1 : 0;
     final newOffset = _parseValue(text)!.isNegative ? 1 : 0;
@@ -125,7 +125,7 @@ abstract class BaseSpinBoxState<T extends BaseSpinBox> extends State<T> {
   @protected
   void fixupValue(String value) {
     final v = _parseValue(value)!;
-    _controller!.text = v.toInt() == v ? v.toInt().toString() : _formatText(v);
+    _controller!.text = _formatText(v.toInt() == v ? v.toInt() : v);
   }
 
   void _selectAll() {
