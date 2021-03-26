@@ -1,5 +1,8 @@
 ## [0.4.0] - 2021-03-26
 
+* Fixed format
+## [0.4.0] - 2021-03-26
+
 * Stable null-safe version with stable SDK constraints
 * Upgraded depencencies
 * Migrated to null safety
